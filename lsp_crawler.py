@@ -39,7 +39,7 @@ def evaluate_current_day(wkd):
         return current_date + 5
     
 first_wkd = check_weekday_of_day1()
-print(first_wkd)
+# print(first_wkd)
 
 current_day = evaluate_current_day(first_wkd)
 print(f"current_day = {current_day}")
@@ -67,8 +67,8 @@ WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id
 fetch_date = driver.find_element(By.XPATH,'//*[@id="page-wrapper"]/div/div/app-i-order-search/div/div[2]/form/div/div[8]/div/input').click()
 time.sleep(3)
 
-select_date = driver.find_element(By.XPATH,"//*[contains(@id,'{}')]/button".format(currentday)).click()
-# select_date = driver.find_element(By.XPATH,f"//*[contains(@id,'{current_day}')]/button").click()
+# select_date = driver.find_element(By.XPATH,"//*[contains(@id,'{}')]/button".format(currentday)).click()
+select_date = driver.find_element(By.XPATH,f"//*[contains(@id,{currentday})]/button").click()
 # select_date = driver.find_element(By.XPATH,"//*[contains(@id,'{current_day}')]/button").click()
 time.sleep(3)
 chose_date=driver.find_element(By.XPATH,'//*[@id="page-wrapper"]/div/div/app-i-order-search/div/div[2]/form/button').click()
