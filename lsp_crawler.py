@@ -11,6 +11,40 @@ from datetime import date
 import os
 import json
 import csv
+import datetime
+def check_weekday_of_day1():
+    year = int(input("Current Year : "))
+    month=int(input("Current Month : "))
+    day1_date=datetime.date(year,month,1)
+    day1_weekday = day1_date.weekday()
+    return day1_weekday
+
+def evaluate_current_day(wkd):
+    date_format = datetime.date.today()
+    currentday = date_format.strftime("%d")
+    current_date = int(currentday)
+    if wkd == 6:
+        return current_date -1
+    if wkd == 0:
+        return current_date
+    if wkd == 1:
+        return current_date + 1
+    if wkd == 2:
+        return current_date + 2
+    if wkd == 3:
+        return current_date + 3
+    if wkd == 4:
+        return current_date +4
+    if wkd == 5:
+        return current_date + 5
+    
+first_wkd = check_weekday_of_day1()
+print(first_wkd)
+
+current_day = evaluate_current_day(first_wkd)
+print(f"current_day = {current_day}")
+currentday = str(current_day)
+# time.sleep(5)
 chrome_option = Options()
 chrome_option.add_experimental_option("prefs",{"download.default_directory":"C:\5bb_lsp_csv"})
 driver = webdriver.Chrome(executable_path=r"C:\Users\Myo Thiha Kyaw\Desktop\chrome\chromedriver.exe",chrome_options=chrome_option)
@@ -27,24 +61,15 @@ opportunity_tab = driver.find_element(By.XPATH,'//*[@id="bs-navbar"]/ul/li[2]/a'
 print("clicked")
 wait = WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="bs-navbar"]/ul/li[2]/ul/li[3]')))
 select_element = driver.find_element(By.XPATH,'//*[@id="bs-navbar"]/ul/li[2]/ul/li[3]').click()
-
-date_format = date.today()
-current_date = date_format.strftime("%d")
-current_day = str(int(current_date) - 1)
-print(current_day)
-# if current_days > 0 and current_days <=8:
-#     current_day = str(current_days)
-# elif current_days > 8 and current_days <= 15:
-#     current_day = str(20 - current_days)
-# elif current_days > 15 and current_days <=22:
-#     current_day=str(30)
     
 WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH,'//*[@id="page-wrapper"]/div/div/app-i-order-search/div/div[2]/form/div/div[8]/div/input')))
 
 fetch_date = driver.find_element(By.XPATH,'//*[@id="page-wrapper"]/div/div/app-i-order-search/div/div[2]/form/div/div[8]/div/input').click()
 time.sleep(3)
 
-select_date = driver.find_element(By.XPATH,"//*[contains(@id,'{}')]/button".format(current_day)).click()
+select_date = driver.find_element(By.XPATH,"//*[contains(@id,'{}')]/button".format(currentday)).click()
+# select_date = driver.find_element(By.XPATH,f"//*[contains(@id,'{current_day}')]/button").click()
+# select_date = driver.find_element(By.XPATH,"//*[contains(@id,'{current_day}')]/button").click()
 time.sleep(3)
 chose_date=driver.find_element(By.XPATH,'//*[@id="page-wrapper"]/div/div/app-i-order-search/div/div[2]/form/button').click()
 
@@ -58,7 +83,7 @@ else:
     print("Donwload completed")
 finally:
     time.sleep(2)
-    driver.close()
+    # driver.close()
 
 
 def read_csv_file(file_name):
@@ -71,22 +96,28 @@ def read_csv_file(file_name):
         #    print(row)
             csv_file.append(row)
     return csv_file
-csv_data = read_csv_file("export")
-dict_data = [i for i in csv_data[0]]
-datas=[]
-for i in range(len(csv_data)-1):
-    # lis1 = [i for i in csv_datas[i+1]]
-    change_dict = dict(zip(dict_data,csv_data[i+1]))
-    # datas.append(dict(zip(dict_data,[y for y in csv_data[i+1]])))
-    datas.append(change_dict)
-# print(datas)
-json_data = json.dumps(datas,indent=4)
-print(json_data)
-if os.path.exists(r"C:\Users\Myo Thiha Kyaw\Downloads\export.csv"):
-      os.remove(r"C:\Users\Myo Thiha Kyaw\Downloads\export.csv")
-      print("File deleted")
+try:
+    csv_data = read_csv_file("export")
+    # print("csv data",csv_data)
+except Exception as e:
+    print("An error occur : ",e)
 else:
-  print("The file does not exist")
+    dict_data = [i for i in csv_data[0]]
+    datas=[]
+    for i in range(len(csv_data)-1):
+        # lis1 = [i for i in csv_datas[i+1]]
+        change_dict = dict(zip(dict_data,csv_data[i+1]))
+        # datas.append(dict(zip(dict_data,[y for y in csv_data[i+1]])))
+        datas.append(change_dict)
+    # print(datas)
+    json_data = json.dumps(datas,indent=4)
+    print(json_data)
+
+    if os.path.exists(r"C:\Users\Myo Thiha Kyaw\Downloads\export.csv"):
+        os.remove(r"C:\Users\Myo Thiha Kyaw\Downloads\export.csv")
+        print("File deleted")
+    else:
+        print("The file does not exist")
   
   
   
