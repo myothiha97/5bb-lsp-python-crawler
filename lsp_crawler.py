@@ -47,7 +47,7 @@ first_wkd = check_weekday_of_day1()
 # print(first_wkd)
 
 current_day = evaluate_current_day(first_wkd)
-print(f"current_day = {current_day}")
+# print(f"current_day = {current_day}")
 currentday = str(current_day)
 # time.sleep(5)
 chrome_option = Options()
