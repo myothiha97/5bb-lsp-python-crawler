@@ -13,8 +13,13 @@ import json
 import csv
 import datetime
 def check_weekday_of_day1():
-    year = int(input("Current Year : "))
-    month=int(input("Current Month : "))
+    # year = int(input("Current Year : "))
+    # month=int(input("Current Month : "))
+    today_date = datetime.date.today()
+    str_year  = today_date.strftime("%Y")
+    str_month = today_date.strftime("%m")
+    year = int(str_year)
+    month = int(str_month)
     day1_date=datetime.date(year,month,1)
     day1_weekday = day1_date.weekday()
     return day1_weekday
@@ -83,7 +88,7 @@ else:
     print("Donwload completed")
 finally:
     time.sleep(2)
-    # driver.close()
+    driver.close()
 
 
 def read_csv_file(file_name):
