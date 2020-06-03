@@ -12,6 +12,8 @@ import os
 import json
 import csv
 import datetime
+import requests
+
 def check_weekday_of_day1():
     # year = int(input("Current Year : "))
     # month=int(input("Current Month : "))
@@ -52,7 +54,8 @@ currentday = str(current_day)
 # time.sleep(5)
 chrome_option = Options()
 chrome_option.add_experimental_option("prefs",{"download.default_directory":"C:\5bb_lsp_csv"})
-driver = webdriver.Chrome(executable_path=r"C:\Users\Myo Thiha Kyaw\Desktop\chrome\chromedriver.exe",chrome_options=chrome_option)
+# driver = webdriver.Chrome(executable_path=r"C:\Users\Myo Thiha Kyaw\Desktop\chrome\chromedriver.exe",chrome_options=chrome_option)
+driver = webdriver.Chrome("./drivers/chromedriver.exe")
 driver.get("http://172.30.0.14:8081/pos")
 user_name = driver.find_element(By.ID,"username")
 pass_word = driver.find_element(By.ID,"password")
@@ -115,14 +118,36 @@ else:
         # datas.append(dict(zip(dict_data,[y for y in csv_data[i+1]])))
         datas.append(change_dict)
     # print(datas)
-    json_data = json.dumps(datas,indent=4)
-    print(json_data)
+    # json_data = json.dumps(datas,indent=4)
+    # print(json_data)
+    # url = "https://5bb-lsp-dev.mm-digital-solutions.com/api/store_crawler_data"
+    # post_status = requests.post(url,json_data)
+    # print(post_status)
 
     if os.path.exists(r"C:\Users\Myo Thiha Kyaw\Downloads\export.csv"):
         os.remove(r"C:\Users\Myo Thiha Kyaw\Downloads\export.csv")
         print("File deleted")
+        headers = {
+                    'Content-Type': "application/json",
+                    'Accept': "*/*",
+                    'Cache-Control': "no-cache",
+                    'Host': '5bb-lsp-dev.mm-digital-solutions.com',
+                    'Accept-Encoding': "gzip, deflate",
+                    'Content-Length': "100",
+                    'Connection': "keep-alive",
+                    'cache-control': "no-cache",
+                }
+        p_url = "https://5bb-lsp-dev.mm-digital-solutions.com/api/store_crawler_data"
+        for i in range(len(datas)):
+            json_data = json.dumps(datas[i],indent=4)
+            print(json_data)
+            p_status= requests.post(p_url,data=json_data,headers=headers)
+            print(p_status)
+            
     else:
         print("The file does not exist")
+        
+
   
   
   
